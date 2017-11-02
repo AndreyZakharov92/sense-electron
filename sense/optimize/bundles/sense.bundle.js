@@ -25867,6 +25867,7 @@ webpackJsonp([3,2],[
 				}
 
 				// Add anti-cache in url if needed
+				
 				if ( s.cache === false ) {
 					s.url = rts.test( cacheURL ) ?
 
@@ -94473,7 +94474,7 @@ webpackJsonp([3,2],[
 	__webpack_require__(1929);
 
 	__webpack_require__(1818).setBrand({
-	  logo: 'url(./installedPlugins/sense/public/icon.png) center no-repeat'
+	  logo: 'url(./icons/icon.png) center no-repeat'
 	}).setRootTemplate(__webpack_require__(1931)).setRootController('sense', 'SenseController');
 
 /***/ },
@@ -96643,7 +96644,7 @@ webpackJsonp([3,2],[
 	function setActiveApi(api) {
 	  if (_.isString(api)) {
 	    $.ajax({
-	      url: '../api/sense/api_server?sense_version=' + encodeURIComponent('@@SENSE_VERSION') + "&apis=" + encodeURIComponent(api),
+	      url: 'http://localhost:3099/api/sense/api_server?sense_version=' + encodeURIComponent('@@SENSE_VERSION') + "&apis=" + encodeURIComponent(api),
 	      dataType: "json" }). // disable automatic guessing
 	    then(function (data, textStatus, jqXHR) {
 	      setActiveApi(loadApisFromJson(data));
@@ -96666,8 +96667,8 @@ webpackJsonp([3,2],[
 	    api = "es_1_0";
 	  } else if (version[0] === "2") {
 	    api = "es_2_0";
-	  } else if (version[0] === "3") {
-	    api = "es_2_0"; // TODO: change :)
+	  } else if (version[0] === "5") {
+	    api = "es_5_0";
 	  } else {
 	      api = "es_1_0";
 	    }
@@ -97064,7 +97065,7 @@ webpackJsonp([3,2],[
 	  var settings = __webpack_require__(1902);
 
 	  var options = {
-	    url: /*'../api/sense/proxy?uri=' + encodeURIComponent(*/path/*)*/,
+	    url: 'http://localhost:3099/api/sense/proxy?uri=' + encodeURIComponent(path),
 	    data: method == "GET" ? null : data,
 	    cache: false,
 	    crossDomain: true,

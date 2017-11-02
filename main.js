@@ -1,37 +1,38 @@
 'use strict';
 
 const path = require('path');
-const electron = require('electron');
+const hapi = require('hapi');
+
 // Module to control application life.
-const app = electron.app;
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
-const Menu = require('menu');
+const { app, shell, BrowserWindow, Menu } = require('electron');
+const defaultMenu = require('electron-default-menu');
+
+const { initApiRoutes } = require('./sense-api-dist');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-function createWindow () {
+function createWindow() {
 
-  setTimeout(function() {
-
-    app.dock.setIcon(electron.nativeImage.createFromPath(path.resolve('./sense/installedPlugins/sense/public/logo128.png')));
+  setTimeout(function () {
 
     // Create the browser window.
     mainWindow = new BrowserWindow({
-      width: 1300,
-      height: 800
+      width: 1280,
+      height: 800,
+      icon: path.resolve('./sense/icons/logo38.png')
     });
 
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/sense/index.html');
 
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
-    mainWindow.on('closed', function() {
+    mainWindow.on('closed', function () {
       // Dereference the window object, usually you would store windows
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.
@@ -40,20 +41,30 @@ function createWindow () {
 
   }, 0);
 
-  var template = [{
-    label: "Edit",
+  const menu = defaultMenu(app, shell);
+  menu.splice(3, 1, {
+    label: 'About',
+    role: 'about',
     submenu: [
-      { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-      { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-      { type: "separator" },
-      { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-      { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-      { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-      { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-    ]}
-  ];
+      {
+        label: 'Sense 2.0.0-beta2'
+      }
+    ]
+  })
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
+}
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+
+    mainWindow.focus()
+  }
+})
+
+if (isSecondInstance) {
+  app.quit()
 }
 
 // This method will be called when Electron has finished
@@ -73,4 +84,22 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+// api for loading appropriate version of autocomplete and for proxying requests to ES nodes
+const server = new hapi.Server();
+server.connection({ port: 3099, host: 'localhost' });
+initApiRoutes(server);
+server.register({ register: require('h2o2') }, function (err) {
+
+  if (err) {
+    console.log('Failed to load h2o2');
+  }
+
+  server.start(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log(`Sense API server running at: ${server.info.uri}`);
+  });
 });
