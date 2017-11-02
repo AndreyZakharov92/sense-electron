@@ -9,10 +9,11 @@ This was an amazing tool, and I used it a lot.
 
 Then elastic released the sense code as a plugin for kibana. And they stopped supporting chrome extension.
 This is great news! ...but what if I'm not using kibana ? I'm using elasticsearch and want to use sense, but I don't want to install kibana for that!
-After a long time of using Sense plugin for Chrome, which was working very well with new versions of elasticsearch, I was surprized one day that it became blocked:
+After a long time of using Sense plugin for Chrome, which was working very well with new versions of elasticsearch, I was surprised one day that it became blocked:
 
 ![blocked chrome extension](https://raw.githubusercontent.com/AndreyZakharov92/sense-electron/master/screenshots/chrome-plugin-disabled.png)
 
+_Note: It's written there "This extension contains malware"_
 ### Sense-electron to the rescue!  
 Sense-electron is the sense plugin wrapped as a native desktop application, using [electron](http://electron.atom.io/).
 It basically has all the code from [Sense-2.0.0-beta2](https://github.com/elastic/sense) and a bit from Kibana in it with couple modifications.
@@ -31,16 +32,16 @@ It has autocomplete feature working and supports es5.0 API (as Kibana does in 5.
 
 
 ### Executable  
-If you just want a running executable of this on Windows x64, then do the following steps (gonna automate this):
+If you just want a running executable of this on local machine, then do the following steps (gonna automate this):
 
 0. Run `npm install` (if you haven't already)
+1. Install npm package `electron-packager` globally: `npm install electron-packager -g`
 1. Create `dist` folder in the root
 2. Run `npm run build`
-3. Copy in `dist` the following: `packaje.json`, `main.js`, `sense-api-dist`, `sense`, `node_nodules`
+3. Copy into `dist` the following: `package.json`, `main.js`, `sense-api-dist`, `sense`, `node_nodules` (node_modules folder is required to be in the folder which electron-packager builds)
 4. Run `npm run package-win`
 
-Feel free to change `package-win` script in `package.json` for your platform.
-Thanks :)  
+Feel free to change `package-win` script in `package.json` to build application for platform of your choice.
 
 The most important tasks for now:  
 * Adapt Sense part of current version of [Kibana](https://github.com/elastic/kibana) to use as separate application
