@@ -44,7 +44,7 @@ If you just want a running executable of this on local machine, then do the foll
 Feel free to change `package-win` script in `package.json` to build application for platform of your choice.
 
 The most important tasks for now:  
-* Adapt Sense part of current version of [Kibana](https://github.com/elastic/kibana) to use as separate application
+* Adapt Sense part (it has been renamed to `console` core plugin) of current version of [Kibana](https://github.com/elastic/kibana) to use as separate application
 
 ### More links  
 * [Repo](https://github.com/gillyb/sensitive) which has been used as a start point. Thank you gillyb!
