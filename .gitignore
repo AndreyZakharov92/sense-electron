@@ -3,3 +3,4 @@ node_modules
 dist
 releases
 sense-api-dist
+!sense/optimize/bundles/node_modules
