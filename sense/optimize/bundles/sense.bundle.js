@@ -97068,13 +97068,15 @@ webpackJsonp([3,2],[
 
 	  var options = {
 	    url: 'http://localhost:3099/api/sense/proxy?uri=' + encodeURIComponent(path),
-	    data: method == "GET" ? null : data,
+			data: method == "GET" ? null : data,
+			contentType: (method == 'GET' || method == 'DELETE') ? null : 'application/json',
 	    cache: false,
 	    crossDomain: true,
 	    type: method,
 	    password: password,
 	    username: uname,
-	    dataType: "text" };
+			dataType: "text"
+		};
 
 	  // disable automatic guessing
 	  $.ajax(options).then(function (data, textStatus, jqXHR) {
