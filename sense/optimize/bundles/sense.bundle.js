@@ -96669,6 +96669,8 @@ webpackJsonp([3,2],[
 	    api = "es_2_0";
 	  } else if (version[0] === "5") {
 	    api = "es_5_0";
+	  } else if (version[0] === "6") {
+	    api = "es_5_0";
 	  } else {
 	      api = "es_1_0";
 	    }
